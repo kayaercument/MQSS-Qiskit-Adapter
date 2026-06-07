@@ -18,8 +18,9 @@
 
 """MQP Resources"""
 
-from qiskit.circuit.controlflow import IfElseOp  # type: ignore
+from mqss.client import Resource # type: ignore
 from qiskit.circuit.library import Measure  # type: ignore
+from qiskit.circuit.controlflow import IfElseOp  # type: ignore
 from qiskit.circuit.library import RXGate  # type: ignore
 from qiskit.circuit.library import (  # type: ignore
     CXGate,

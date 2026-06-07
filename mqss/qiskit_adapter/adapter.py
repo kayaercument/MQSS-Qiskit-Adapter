@@ -42,6 +42,7 @@ class MQSSQiskitAdapter:
         hpcqc: Optional[bool] = False,
         base_url: Optional[str] = "",
     ) -> None:
+        
         is_hpcqc_env = os.getenv("MQSS_HPCQC_ENV", "False").lower() in [
             "true",
             "1",

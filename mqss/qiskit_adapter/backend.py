@@ -20,6 +20,7 @@
 
 from typing import List, Optional, Union
 
+from mqss.client import MQSSClient, Resource, CircuitJobRequest # type: ignore
 from qiskit.circuit import QuantumCircuit  # type: ignore
 from qiskit.providers import BackendV2, Options  # type: ignore
 from qiskit.qasm2 import dumps as qasm2_str  # type: ignore
@@ -106,6 +107,7 @@ class MQSSQiskitBackend(BackendV2):
         Returns:
             Number of pending jobs
         """
+        return self.client.pending_job_count(self.name)
         return self.client.pending_job_count(self.name)
 
     def run(
