@@ -21,7 +21,6 @@ This module defines the MQSSQiskitJob class, which extends Qiskit's JobV1 class 
 cancellation, status retrieval, and result fetching for MQSS backends using the MQSSClient.
 """
 
-from mqss.client import MQSSClient, CircuitJobRequest
 from qiskit.providers import JobStatus  # type: ignore
 from qiskit.providers import Backend, JobV1  # type: ignore
 from qiskit.result import Counts, Result  # type: ignore

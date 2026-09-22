@@ -18,11 +18,7 @@ def run_tests(session: Session, qiskit: str, marker: str) -> None:
 )
 def test_backend(session: Session, qiskit: str) -> None:
     """Run the tests with different Qiskit versions."""
-    session.run("rm", "-rf", ".venv", external=True)
-    session.run("uv", "lock", "--upgrade-package", f"qiskit=={qiskit}", external=True)
-    session.run("uv", "sync", external=True)
-    session.run("uv", "pip", "install", "../MQSS-Client", external=True)
-    session.run("uv", "run", "pytest", "-v", "-s", "-m", "backend", external=True)
+    run_tests(session, qiskit, "backend")
 
 
 @nox.session(python=["3.10", "3.11", "3.12", "3.13", "3.14"])
@@ -32,8 +28,4 @@ def test_backend(session: Session, qiskit: str) -> None:
 )
 def test_job(session: Session, qiskit: str) -> None:
     """Run the tests with different Qiskit versions."""
-    session.run("rm", "-rf", ".venv", external=True)
-    session.run("uv", "lock", "--upgrade-package", f"qiskit=={qiskit}", external=True)
-    session.run("uv", "sync", external=True)
-    session.run("uv", "pip", "install", "../MQSS-Client", external=True)
-    session.run("uv", "run", "pytest", "-v", "-s", "-m", "job", external=True)
+    run_tests(session, qiskit, "job")

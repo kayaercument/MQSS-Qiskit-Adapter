@@ -35,7 +35,7 @@ except KeyError:
     print("set MQSS_TOKEN to your MQSS token in the environment.")
 
 # NOTE: change to current backend names
-BACKENDS = ["QExa20"]
+BACKENDS = ["EQE1"]
 URL = "https://portal.quantum.lrz.de:4000/v1/"
 
 

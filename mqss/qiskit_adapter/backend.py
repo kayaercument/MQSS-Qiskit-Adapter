@@ -20,7 +20,6 @@
 
 from typing import List, Optional, Union
 
-from mqss.client import MQSSClient, Resource, CircuitJobRequest # type: ignore
 from qiskit.circuit import QuantumCircuit  # type: ignore
 from qiskit.providers import BackendV2, Options  # type: ignore
 from qiskit.qasm2 import dumps as qasm2_str  # type: ignore
