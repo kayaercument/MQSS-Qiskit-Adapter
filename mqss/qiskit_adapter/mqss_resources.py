@@ -78,7 +78,17 @@ def get_target(resource: Resource):
             )
             continue
 
-        target.add_instruction(instruction_factory(), connections)
+        for _instruction, _connections in resource_info.instructions:
+            try:
+                instruction = instruction_map[_instruction]()
+                if isinstance(instruction, type):
+                    target.add_instruction(instruction, name=_instruction)
+                else:
+                    target.add_instruction(instruction, _connections)
+            except KeyError:
+                print(
+                    f"Warning: Instruction '{_instruction}' not found in the instruction_map."
+                )
 
     return target
 
