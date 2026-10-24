@@ -18,15 +18,14 @@
 
 """MQP Resources"""
 
-from qiskit.circuit.library import Measure  # type: ignore
 from qiskit.circuit.controlflow import IfElseOp  # type: ignore
+from qiskit.circuit.library import Measure  # type: ignore
 from qiskit.circuit.library import RXGate  # type: ignore
 from qiskit.circuit.library import (  # type: ignore
     CXGate,
     CZGate,
     HGate,
     IGate,
-    Measure,
     Reset,
     RGate,
     RXXGate,
@@ -56,7 +55,7 @@ def get_coupling_map(resource: Resource):
 
 
 def get_target(resource: Resource):
-    """Return Target for the backend"""
+    """Return Target for the backend."""
 
     if resource is None or not resource.native_gateset:
         return None
@@ -64,11 +63,12 @@ def get_target(resource: Resource):
     target = Target(num_qubits=resource.qubit_count)
 
     for gate in resource.native_gateset:
-        connections: dict[tuple[int, ...] | None, None] = (
-            {None: None}
-            if not gate.supported_qubits
-            else {tuple(qubits): None for qubits in gate.supported_qubits}
-        )
+        connections: dict[tuple[int, ...] | None, None]
+
+        if not gate.supported_qubits:
+            connections = {None: None}
+        else:
+            connections = {tuple(qubits): None for qubits in gate.supported_qubits}
 
         instruction_factory = instruction_map.get(gate.name)
 
@@ -78,17 +78,12 @@ def get_target(resource: Resource):
             )
             continue
 
-        for _instruction, _connections in resource_info.instructions:
-            try:
-                instruction = instruction_map[_instruction]()
-                if isinstance(instruction, type):
-                    target.add_instruction(instruction, name=_instruction)
-                else:
-                    target.add_instruction(instruction, _connections)
-            except KeyError:
-                print(
-                    f"Warning: Instruction '{_instruction}' not found in the instruction_map."
-                )
+        instruction = instruction_factory()
+
+        if isinstance(instruction, type):
+            target.add_instruction(instruction, name=gate.name)
+        else:
+            target.add_instruction(instruction, connections)
 
     return target
 

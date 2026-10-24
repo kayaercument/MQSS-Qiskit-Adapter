@@ -107,7 +107,6 @@ class MQSSQiskitBackend(BackendV2):
             Number of pending jobs
         """
         return self.client.pending_job_count(self.name)
-        return self.client.pending_job_count(self.name)
 
     def run(
         self,
