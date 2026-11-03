@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ["3.10", "3.11", "3.12", "3.13"]
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
     steps:
       - uses: actions/checkout@v4
@@ -42,7 +42,7 @@ jobs:
           github.event.action == 'synchronize' && (contains(github.event.pull_request.changed_files,
           'mqss') || contains(github.event.pull_request.changed_files, 'tests'))
         env:
-          MQP_TOKEN: ${{ secrets.MQP_TOKEN }}
+          MQSS_TOKEN: ${{ secrets.MQP_TOKEN }}
         run: |
           uvx nox --session test_backend
       - name: Test Job when PR is merged
@@ -51,6 +51,6 @@ jobs:
           (contains(github.event.pull_request.changed_files, 'mqss') ||
           contains(github.event.pull_request.changed_files, 'tests'))
         env:
-          MQP_TOKEN: ${{ secrets.MQP_TOKEN }}
+          MQSS_TOKEN: ${{ secrets.MQP_TOKEN }}
         run: |
           uvx nox --session test_job

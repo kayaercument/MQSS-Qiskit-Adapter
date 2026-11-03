@@ -39,8 +39,8 @@ class MQSSQiskitAdapter:
         self,
         token: str,
         *,
-        hpcqc: Optional[bool] = False,
-        base_url: Optional[str] = "",
+        hpcqc: Optional[bool] = None,
+        base_url: Optional[str] = None,
     ) -> None:
         is_hpcqc_env = os.getenv("MQSS_HPCQC_ENV", "False").lower() in [
             "true",
@@ -49,11 +49,11 @@ class MQSSQiskitAdapter:
         ]
         # hpcqc gets priority over the environment variable
 
-        self.client = MQSSClient(
-            token=token,
-            url_or_queue=base_url,
-            is_hpc=hpcqc if hpcqc is not None else is_hpcqc_env,
-        )
+        is_hpc = hpcqc if hpcqc is not None else is_hpcqc_env
+        if base_url is None:
+            self.client = MQSSClient(token=token, is_hpc=is_hpc)
+        else:
+            self.client = MQSSClient(token=token, url_or_queue=base_url, is_hpc=is_hpc)
 
     def get_backend(self, name: Optional[str] = None, **kwargs) -> MQSSQiskitBackend:
         """Return a backend by name

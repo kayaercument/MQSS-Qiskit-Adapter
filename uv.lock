@@ -940,7 +940,8 @@ requires-dist = [
     { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'", specifier = ">=0.26.1" },
     { name = "mqss-client", git = "https://github.com/Munich-Quantum-Software-Stack/MQSS-Client.git" },
     { name = "python-decouple", specifier = ">=3.8" },
-    { name = "qiskit", specifier = ">=0.45" },
+    { name = "qiskit", marker = "python_full_version < '3.14'", specifier = ">=0.45" },
+    { name = "qiskit", marker = "python_full_version >= '3.14'", specifier = ">=2.1" },
     { name = "qiskit-qasm3-import", specifier = ">=0.5.1" },
     { name = "requests", specifier = ">=2.32.3" },
 ]

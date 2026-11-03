@@ -45,7 +45,7 @@ class MQSSQiskitJob(JobV1):
 
     def cancel(self):
         """Cancel the job"""
-        self.client.cancel_job(self.job_id(), self.job_request)
+        self.client.cancel_job(self.job_request)
 
     def status(self) -> JobStatus:
         """Return the job's current status
@@ -60,6 +60,8 @@ class MQSSQiskitJob(JobV1):
             return JobStatus.INITIALIZING
         if mqss_status == "WAITING":
             return JobStatus.QUEUED
+        if mqss_status == "RUNNING":
+            return JobStatus.RUNNING
         if mqss_status == "CANCELLED":
             return JobStatus.CANCELLED
         if mqss_status == "FAILED":
@@ -74,8 +76,18 @@ class MQSSQiskitJob(JobV1):
         Returns:
             [Result](https://qiskit.org/documentation/stubs/qiskit.result.Result.html)
             object for the job.
+
+        Raises:
+            JobError: If the client returns no result after waiting up to 600 seconds.
         """
-        res = self.client.job_results(self.job_request, True)
+        res = self.client.job_results(
+            job=self.job_request,
+            wait=True,
+            timeout=600,
+        )
+
+        if res is None:
+            raise RuntimeError("Job execution failed or timed out after 600 seconds.")
         if isinstance(res.results, list):
             res_counts = res.results
         else:
